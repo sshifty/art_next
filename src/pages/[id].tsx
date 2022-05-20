@@ -1,41 +1,54 @@
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getSingleArtworkAsync } from "../features/artworks/singleArtworkSlice";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import FavouriteButton from "../../Components/FavouriteButton";
-const SingleArtwork: NextPage = (props) => {
-  const dispatch = useAppDispatch();
-  const artwork = useAppSelector((state) => state.singleArtwork);
-  const router = useRouter();
-  const { id } = router.query;
+import { fetchSingleArtwork } from "../app/api";
+import { Artwork } from "../features/artworks/types";
+import { useStore } from "react-redux";
+
+interface SingleProps {
+  artwork: Artwork;
+}
+const SingleArtwork: NextPage<SingleProps> = ({ artwork }) => {
+  const [mount, setMount] = useState(false);
   useEffect(() => {
-    if (router.isReady) {
-      dispatch(getSingleArtworkAsync(Number(id)));
-    }
+    setMount(true);
   }, []);
-  if (artwork.status === "pending") {
-    return <h1>Loading...</h1>;
-  } else if (artwork.status === "rejected") {
-    return <h1>No artwork found</h1>;
-  }
+
+  console.log(artwork);
   return (
     <div>
-      <h1>{artwork.data.title}</h1>
+      <h1>{artwork.title}</h1>
       <Image
-        src={artwork.data.imageURL}
+        src={artwork.imageURL}
         width={500}
         height={500}
-        placeholder={artwork.data.thumbnail?.lqip ? "blur" : "empty"}
-        blurDataURL={artwork.data.thumbnail?.lqip}
-        alt={artwork.data.thumbnail?.alt_text ?? artwork.data.title}
+        placeholder={artwork.thumbnail?.lqip ? "blur" : "empty"}
+        blurDataURL={artwork.thumbnail?.lqip}
+        alt={artwork.thumbnail?.alt_text ?? artwork.title}
       />
-      <FavouriteButton artwork={artwork.data} />
+      {mount ? <FavouriteButton artwork={artwork} /> : null}
     </div>
   );
 };
 
 export default SingleArtwork;
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+}
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { id } = context.params;
+  const data = await fetchSingleArtwork(Number(id));
 
-export async function getStaticProps() {}
+  return {
+    props: {
+      artwork: data,
+    },
+  };
+};
