@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import { FC } from "react";
 import { Artwork } from "../types";
-import FavouriteButton from "../../../Components/FavouriteButton";
+import FavouriteButton from "../../../../Components/FavouriteButton";
 import Link from "next/link";
 interface CardProps {
   artwork: Artwork;

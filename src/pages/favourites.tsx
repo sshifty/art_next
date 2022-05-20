@@ -8,7 +8,7 @@ type Props = OwnProps;
 
 const Favourites: NextPage = (props) => {
   const favourites = useAppSelector((state) => state.favourite);
-  if (!favourites.list.length) {
+  if (!favourites.list?.length) {
     return <h1>{"You don't have any favourite artwork!"}</h1>;
   }
   return (

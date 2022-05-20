@@ -1,24 +1,39 @@
 import React, { FC } from "react";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { getArtworksAsync } from "../features/artworks/artworksSlice";
-import { Pagination } from "../features/artworks/types";
-import { getSearchArtworks } from "../features/artworks/artworksSlice";
-import { setLimit } from "../features/artworks/paginationSlice";
+import { useAppSelector, useAppDispatch } from "../src/app/hooks";
+import { getArtworksAsync } from "../src/features/artworks/artworksSlice";
+import { Pagination } from "../src/features/artworks/types";
+import { getSearchArtworks } from "../src/features/artworks/artworksSlice";
+import { setLimit } from "../src/features/artworks/paginationSlice";
 
 interface ControllerProps {
   pagination: Pagination;
 }
 export const Controller: FC<ControllerProps> = ({ pagination }) => {
+  //refactor pagi/pagination
   const pagi = useAppSelector((state) => state.pagination);
   const dispatch = useAppDispatch();
+  const search = useAppSelector((state) => state.artworks.search);
   const onSubmit = (e: React.SyntheticEvent): void => {
     e.preventDefault();
-    dispatch(
-      getArtworksAsync({
-        page: pagination.current_page,
-        pageLimit: pagi.limit,
-      })
-    );
+    console.log(search);
+    if (!search) {
+      console.log("empty search", search);
+      dispatch(
+        getArtworksAsync({
+          page: pagination.current_page,
+          pageLimit: pagi.limit,
+        })
+      );
+    } else {
+      console.log("search", search);
+      dispatch(
+        getSearchArtworks({
+          param: search,
+          page: pagination.current_page,
+          pageLimit: pagi.limit,
+        })
+      );
+    }
   };
 
   const limitValues: number[] = [15, 25, 30, 50, 100];

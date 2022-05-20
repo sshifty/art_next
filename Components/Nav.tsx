@@ -8,7 +8,7 @@ const Nav: FunctionComponent = (props) => {
       <div>
         <ul>
           <li>
-            <Link href="/Users/alexpatai/projects/personal/assesment/public">
+            <Link href="/">
               <a>Home</a>
             </Link>
           </li>

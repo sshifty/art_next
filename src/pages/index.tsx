@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getArtworksAsync } from "../features/artworks/artworksSlice";
 import { useEffect } from "react";
 import { ArtCard } from "../features/artworks/components/ArtCard";
-import { Controller } from "../Components/Controller";
+import { Controller } from "../../Components/Controller";
 
 const IndexPage: NextPage = () => {
   const dispatch = useAppDispatch();

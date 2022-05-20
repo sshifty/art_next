@@ -1,9 +1,10 @@
 import React, { ChangeEvent, FunctionComponent, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../src/app/hooks";
 import {
   getArtworksAsync,
   getSearchArtworks,
-} from "../features/artworks/artworksSlice";
+  setSearch,
+} from "../src/features/artworks/artworksSlice";
 import Router, { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
@@ -11,15 +12,16 @@ const Search: FunctionComponent = (props) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pagination = useAppSelector((state) => state.pagination);
-  const [search, setSearch] = useState("");
+  const [localSearch, setLocalSearch] = useState("");
   const artworkSearch = useAppSelector((state) => state.artworks.search);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    setLocalSearch(e.target.value);
   };
+
   const onSubmit = (e: React.SyntheticEvent) => {
-    setSearch(search);
+    dispatch(setSearch(localSearch));
     e.preventDefault();
-    if (!search) {
+    if (!localSearch) {
       dispatch(
         getArtworksAsync({
           page: 1,
@@ -38,12 +40,15 @@ const Search: FunctionComponent = (props) => {
     if (router.pathname !== "/") {
       router.push("/");
     }
-    console.log(router.pathname);
   };
   return (
     <div>
       <form onSubmit={onSubmit}>
-        <input onChange={(e) => handleChange(e)} value={search} type="text" />
+        <input
+          onChange={(e) => handleChange(e)}
+          value={localSearch}
+          type="text"
+        />
         <button>Search</button>
       </form>
     </div>

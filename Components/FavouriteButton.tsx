@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../src/app/hooks";
 import { useSelector } from "react-redux";
 import {
   addFavourite,
   removeFavourite,
-} from "../features/artworks/favouriteArtworkSlice";
-import { Artwork } from "../features/artworks/types";
+} from "../src/features/artworks/favouriteArtworkSlice";
+import { Artwork } from "../src/features/artworks/types";
 
 interface OwnProps {
   artwork: Artwork;

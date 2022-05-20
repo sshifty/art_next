@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { getSingleArtworkAsync } from "../features/artworks/singleArtworkSlice";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import FavouriteButton from "../Components/FavouriteButton";
+import FavouriteButton from "../../Components/FavouriteButton";
 const SingleArtwork: NextPage = (props) => {
   const dispatch = useAppDispatch();
   const artwork = useAppSelector((state) => state.singleArtwork);
@@ -37,3 +37,5 @@ const SingleArtwork: NextPage = (props) => {
 };
 
 export default SingleArtwork;
+
+export async function getStaticProps() {}
