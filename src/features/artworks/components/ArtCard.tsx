@@ -2,15 +2,17 @@ import Image from "next/image";
 
 import { FC } from "react";
 import { Artwork } from "../types";
-import FavouriteButton from "../../../../Components/FavouriteButton";
+import FavouriteButton from "../../../Components/FavouriteButton";
 import Link from "next/link";
+import styles from "../../../styles/ArtCard.module.css";
 interface CardProps {
   artwork: Artwork;
 }
 
 export const ArtCard: FC<CardProps> = ({ artwork }) => {
+  console.log(artwork);
   return (
-    <div>
+    <div className={styles.card}>
       <Image
         src={artwork.imageURL}
         width={200}
@@ -20,10 +22,12 @@ export const ArtCard: FC<CardProps> = ({ artwork }) => {
         alt={artwork.thumbnail?.alt_text ?? artwork.title}
       />
       <h3>{artwork.title}</h3>
-      <FavouriteButton artwork={artwork} />
-      <Link href={`/${artwork.id}`}>
-        <button>SHOW</button>
-      </Link>
+      <div className={styles.buttonContainer}>
+        <FavouriteButton artwork={artwork} />
+        <Link href={`/${artwork.id}`}>
+          <button className={styles.btnShow}> SHOW</button>
+        </Link>
+      </div>
     </div>
   );
 };

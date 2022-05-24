@@ -1,0 +1,17 @@
+.card{
+    width:200px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap:.3rem;
+}
+.buttonContainer{
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.btnShow{
+    background-color: #4bdfad;
+    padding:.1rem;
+}

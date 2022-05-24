@@ -1,10 +1,10 @@
 import React, { ChangeEvent, FunctionComponent, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../src/app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   getArtworksAsync,
   getSearchArtworks,
   setSearch,
-} from "../src/features/artworks/artworksSlice";
+} from "../features/artworks/artworksSlice";
 import Router, { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
@@ -42,9 +42,11 @@ const Search: FunctionComponent = (props) => {
     }
   };
   return (
-    <div>
+    <div data-testid="search-form">
       <form onSubmit={onSubmit}>
+        <label htmlFor="search-input">Search Artwork</label>
         <input
+          id="search-input"
           onChange={(e) => handleChange(e)}
           value={localSearch}
           type="text"

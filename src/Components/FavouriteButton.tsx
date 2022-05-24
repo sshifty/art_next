@@ -1,11 +1,10 @@
 import React, { FunctionComponent } from "react";
-import { useAppDispatch } from "../src/app/hooks";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   addFavourite,
   removeFavourite,
-} from "../src/features/artworks/favouriteArtworkSlice";
-import { Artwork } from "../src/features/artworks/types";
+} from "../features/artworks/favouriteSlice";
+import { Artwork } from "../features/artworks/types";
 
 interface OwnProps {
   artwork: Artwork;
@@ -15,10 +14,17 @@ type Props = OwnProps;
 
 const FavouriteButton: FunctionComponent<Props> = ({ artwork }) => {
   const dispatch = useAppDispatch();
-  const favouriteIDs = useSelector((state) =>
-    state.favourite.list.map((item) => item.id)
+  const favouriteIDs = useAppSelector(
+    (state) => state.favourite.list?.map((item) => item.id) || null
   );
-  const isFav = favouriteIDs.indexOf(artwork.id) !== -1;
+
+  if (!favouriteIDs) {
+    return null;
+  }
+  // Example
+  //const isLoading = ["success", "pending"].includes(status);
+
+  const isFav = favouriteIDs.includes(artwork.id);
   const buttonContext = isFav ? "REMOVE" : "ADD";
   const chooseAction = (): void => {
     isFav

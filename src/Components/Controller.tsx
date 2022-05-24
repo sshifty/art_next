@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { useAppSelector, useAppDispatch } from "../src/app/hooks";
-import { getArtworksAsync } from "../src/features/artworks/artworksSlice";
-import { Pagination } from "../src/features/artworks/types";
-import { getSearchArtworks } from "../src/features/artworks/artworksSlice";
-import { setLimit } from "../src/features/artworks/paginationSlice";
+import { useAppSelector, useAppDispatch } from "../app/hooks";
+import { getArtworksAsync } from "../features/artworks/artworksSlice";
+import { Pagination } from "../features/artworks/types";
+import { getSearchArtworks } from "../features/artworks/artworksSlice";
+import { setLimit } from "../features/artworks/paginationSlice";
 
 interface ControllerProps {
   pagination: Pagination;
@@ -15,9 +15,8 @@ export const Controller: FC<ControllerProps> = ({ pagination }) => {
   const search = useAppSelector((state) => state.artworks.search);
   const onSubmit = (e: React.SyntheticEvent): void => {
     e.preventDefault();
-    console.log(search);
+
     if (!search) {
-      console.log("empty search", search);
       dispatch(
         getArtworksAsync({
           page: pagination.current_page,
@@ -25,7 +24,6 @@ export const Controller: FC<ControllerProps> = ({ pagination }) => {
         })
       );
     } else {
-      console.log("search", search);
       dispatch(
         getSearchArtworks({
           param: search,

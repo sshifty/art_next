@@ -1,27 +1,36 @@
 import { GetStaticProps, NextPage } from "next";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useEffect, useState } from "react";
-import { getSingleArtworkAsync } from "../features/artworks/singleArtworkSlice";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import FavouriteButton from "../../Components/FavouriteButton";
+import FavouriteButton from "../Components/FavouriteButton";
 import { fetchSingleArtwork } from "../app/api";
 import { Artwork } from "../features/artworks/types";
-import { useStore } from "react-redux";
+import axios from "axios";
 
 interface SingleProps {
-  artwork: Artwork;
+  artwork: Artwork | null;
+  errorMessage?: string;
+  errorCode?: number;
 }
-const SingleArtwork: NextPage<SingleProps> = ({ artwork }) => {
+
+const SingleArtwork: NextPage<SingleProps> = ({ artwork, errorMessage }) => {
   const [mount, setMount] = useState(false);
+  const router = useRouter();
+
   useEffect(() => {
     setMount(true);
   }, []);
 
-  console.log(artwork);
+  if (errorMessage) {
+    return <h1>Error</h1>;
+  }
+  if (router.isFallback) {
+    return <h1>loading</h1>;
+  }
   return (
     <div>
       <h1>{artwork.title}</h1>
+
       <Image
         src={artwork.imageURL}
         width={500}
@@ -30,7 +39,8 @@ const SingleArtwork: NextPage<SingleProps> = ({ artwork }) => {
         blurDataURL={artwork.thumbnail?.lqip}
         alt={artwork.thumbnail?.alt_text ?? artwork.title}
       />
-      {mount ? <FavouriteButton artwork={artwork} /> : null}
+
+      {mount && <FavouriteButton artwork={artwork} />}
     </div>
   );
 };
@@ -39,16 +49,40 @@ export default SingleArtwork;
 export async function getStaticPaths() {
   return {
     paths: [],
-    fallback: "blocking",
+    fallback: true,
+    /*true:serve static HTML fallback that then loads the data client-side
+    -in this case use if(router.isFallback) to let the user know we are waiting for data to be served
+
+   false:dont fetch other products than we specified and get 404 error
+   blocking: first build the page with the data, but we cannot use router.isFallback and let the user know we are waiting
+   for data to be fetched
+  */
   };
 }
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params;
-  const data = await fetchSingleArtwork(Number(id));
 
-  return {
-    props: {
-      artwork: data,
-    },
-  };
+  try {
+    const data = await fetchSingleArtwork(Number(id));
+    console.log(data);
+    return {
+      props: {
+        artwork: data,
+        errorMessage: "",
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        artwork: null,
+        errorMessage: "error",
+      },
+    };
+  }
+  //   return {
+  //     props: {
+  //       artwork: "error",
+  //     },
+  //   };
+  // }
 };
