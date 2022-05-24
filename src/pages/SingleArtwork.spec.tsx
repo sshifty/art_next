@@ -29,7 +29,7 @@ describe("Single Artwork page", () => {
 
     const response = await getStaticProps({ params: { id: "50273" } });
 
-    expect(api.fetchSingleArtwork).toHaveBeenCalled();
+    expect(api.fetchSingleArtwork).toBeCalledTimes(1);
 
     expect(response).toEqual({
       props: {
@@ -44,11 +44,13 @@ describe("Single Artwork page", () => {
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => ({
       isFallback: false,
     }));
+
     render(
       <Provider store={store}>
         <SingleArtwork artwork={artwork} />
       </Provider>
     );
+
     const titleHeader = screen.getByRole("heading", { name: artwork.title });
     expect(titleHeader).toBeVisible();
   });
