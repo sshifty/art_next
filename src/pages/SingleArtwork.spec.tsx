@@ -49,4 +49,17 @@ describe("Single Artwork page", () => {
     const titleHeader = screen.getByRole("heading", { name: artwork.title });
     expect(titleHeader).toBeVisible();
   });
+  it("Artwork page renders loading while waiting", () => {
+    const store = makeStore();
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => ({
+      isFallback: true,
+    }));
+    render(
+      <Provider store={store}>
+        <SingleArtwork artwork={artwork} />
+      </Provider>
+    );
+    const titleHeader = screen.getByRole("heading", { name: "loading" });
+    expect(titleHeader).toBeVisible();
+  });
 });
