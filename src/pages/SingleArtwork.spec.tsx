@@ -20,6 +20,7 @@ const artwork: Artwork = {
   imageURL:
     "https://www.artic.edu/iiif/2/bf4ac6d1-fdd1-7937-fbac-079b3dde6f1d/full/843,/0/default.jpg",
 };
+
 describe("Single Artwork page", () => {
   it("getStaticProps returns the correct data", async () => {
     jest
@@ -27,7 +28,9 @@ describe("Single Artwork page", () => {
       .mockImplementation(async () => artwork);
 
     const response = await getStaticProps({ params: { id: "50273" } });
+
     expect(api.fetchSingleArtwork).toHaveBeenCalled();
+
     expect(response).toEqual({
       props: {
         artwork,
@@ -49,16 +52,20 @@ describe("Single Artwork page", () => {
     const titleHeader = screen.getByRole("heading", { name: artwork.title });
     expect(titleHeader).toBeVisible();
   });
+
   it("Artwork page renders loading while waiting", () => {
     const store = makeStore();
+
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => ({
       isFallback: true,
     }));
+
     render(
       <Provider store={store}>
         <SingleArtwork artwork={artwork} />
       </Provider>
     );
+
     const titleHeader = screen.getByRole("heading", { name: "loading" });
     expect(titleHeader).toBeVisible();
   });
