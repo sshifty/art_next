@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchArtworks, fetchQuerySearch } from "../../app/api";
 import { ArtworkState, GetArtworkProps, SearchArtworkProps } from "./types";
 
-const initialState: ArtworkState = {
+export const initialState: ArtworkState = {
   list: [],
   pagination: {
     current_page: 1,

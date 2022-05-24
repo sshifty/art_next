@@ -1,10 +1,32 @@
-import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import artworkSlice from "../features/artworks/artworksSlice";
-import singleArtworkSlice from "../features/artworks/singleArtworkSlice";
-import favouriteSlice from "../features/artworks/favouriteSlice";
-import paginationSlice from "../features/artworks/paginationSlice";
+import merge from "lodash/merge";
 
-export function makeStore() {
+import {
+  Action,
+  configureStore,
+  DeepPartial,
+  ThunkAction,
+} from "@reduxjs/toolkit";
+import artworkSlice, {
+  initialState as artworkInit,
+} from "../features/artworks/artworksSlice";
+
+import singleArtworkSlice, {
+  initialState as initSingle,
+} from "../features/artworks/singleArtworkSlice";
+import favouriteSlice, {
+  initialState as initFav,
+} from "../features/artworks/favouriteSlice";
+import paginationSlice, {
+  initialState as initPagi,
+} from "../features/artworks/paginationSlice";
+import {
+  Artwork,
+  ArtworkState,
+  FavouriteState,
+  Pagination,
+} from "../features/artworks/types";
+
+export function makeStore(preloadedPartialState: DeepPartial<RootState> = {}) {
   return configureStore({
     reducer: {
       artworks: artworkSlice,
@@ -12,12 +34,27 @@ export function makeStore() {
       favourite: favouriteSlice,
       pagination: paginationSlice,
     },
+    preloadedState: merge(
+      {},
+      {
+        artworks: artworkInit,
+        singleArtwork: initSingle,
+        favourite: initFav,
+        pagination: initPagi,
+      },
+      preloadedPartialState
+    ),
   });
 }
 export const store = makeStore();
 
 export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = {
+  artworks: ArtworkState;
+  singleArtwork: Artwork;
+  favourite: FavouriteState;
+  pagination: Pagination;
+};
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,

@@ -7,7 +7,7 @@ const getLocal = () => {
   }
 };
 
-const initialState: FavouriteState = {
+export const initialState: FavouriteState = {
   list: getLocal(),
 };
 

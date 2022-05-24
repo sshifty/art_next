@@ -2,10 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { makeStore } from "../app/store";
 import SingleArtwork, { getStaticProps } from "../pages/[id]";
-
+import * as reduxHooks from "../app/hooks";
 import * as api from "../app/api";
 import { Artwork } from "../features/artworks/types";
 import { useRouter } from "next/router";
+
+import { favouriteSlice } from "../features/artworks/favouriteSlice";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const artwork: Artwork = {
   id: 50273,
@@ -22,7 +25,11 @@ const artwork: Artwork = {
 };
 
 describe("Single Artwork page", () => {
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
   it("getStaticProps returns the correct data", async () => {
+    const store = makeStore();
     jest
       .spyOn(api, "fetchSingleArtwork")
       .mockImplementation(async () => artwork);
@@ -41,6 +48,7 @@ describe("Single Artwork page", () => {
 
   it("Artwork page renders with props data", () => {
     const store = makeStore();
+
     jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => ({
       isFallback: false,
     }));
@@ -70,5 +78,32 @@ describe("Single Artwork page", () => {
 
     const titleHeader = screen.getByRole("heading", { name: "loading" });
     expect(titleHeader).toBeVisible();
+  });
+
+  it("Favourite button renders correct data", () => {
+    const store = makeStore({
+      // favourite: {
+      //   list: [artwork],
+      // },
+    });
+    //TODO!!!!
+    // jest.spyOn(window.localStorage, "getItem").mockImplementation(() => {
+    //   return JSON.stringify([artwork]);
+    // });
+
+    jest.spyOn(require("next/router"), "useRouter").mockImplementation(() => ({
+      isFallback: false,
+    }));
+
+    const myStore = store.getState();
+
+    render(
+      <Provider store={store}>
+        <SingleArtwork artwork={artwork} />
+      </Provider>
+    );
+
+    const favButton = screen.getByRole("button", { name: "REMOVE" });
+    expect(favButton).toBeVisible();
   });
 });

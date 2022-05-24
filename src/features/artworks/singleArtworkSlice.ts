@@ -3,7 +3,7 @@ import { SingleArtworkState, Artwork } from "./types";
 import { fetchSingleArtwork } from "../../app/api";
 import { getArtworksAsync } from "./artworksSlice";
 
-const initialState: SingleArtworkState = {
+export const initialState: SingleArtworkState = {
   data: {},
   status: "pending",
 };

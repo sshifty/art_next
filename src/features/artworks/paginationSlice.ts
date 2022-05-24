@@ -1,7 +1,7 @@
 import { Pagination } from "./types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: Pagination = {
+export const initialState: Pagination = {
   current_page: 1,
   limit: 25,
   total_pages: 1,
