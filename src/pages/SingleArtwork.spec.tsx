@@ -99,7 +99,7 @@ describe("Single Artwork page", () => {
       isFallback: false,
     }));
 
-    render(
+    const { rerender } = render(
       <Provider store={store}>
         <SingleArtwork artwork={artwork} />
       </Provider>
@@ -118,8 +118,15 @@ describe("Single Artwork page", () => {
 
     expect(actions).toEqual([expectedPayload]);
 
-    screen.debug();
-    // const addButton = await screen.findByRole("button", { name: "ADD" });
-    // expect(addButton).toBeVisible();
+    const updatedStore = createMockStore();
+
+    rerender(
+      <Provider store={updatedStore}>
+        <SingleArtwork artwork={artwork} />
+      </Provider>
+    );
+
+    const addButton = await screen.findByRole("button", { name: "ADD" });
+    expect(addButton).toBeVisible();
   });
 });
