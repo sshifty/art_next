@@ -9,7 +9,6 @@ interface ControllerProps {
   pagination: Pagination;
 }
 export const Controller: FC<ControllerProps> = ({ pagination }) => {
-  //refactor pagi/pagination
   const pagi = useAppSelector((state) => state.pagination);
   const dispatch = useAppDispatch();
   const search = useAppSelector((state) => state.artworks.search);

@@ -47,9 +47,11 @@ const Search: FunctionComponent = (props) => {
         <label htmlFor="search-input">Search Artwork</label>
         <input
           id="search-input"
+          data-testid="search-input"
           onChange={(e) => handleChange(e)}
           value={localSearch}
           type="text"
+          placeholder={"Type here"}
         />
         <button>Search</button>
       </form>

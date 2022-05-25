@@ -2,13 +2,9 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { makeStore } from "../app/store";
 import SingleArtwork, { getStaticProps } from "../pages/[id]";
-import * as reduxHooks from "../app/hooks";
 import * as api from "../app/api";
 import { Artwork } from "../features/artworks/types";
-import { useRouter } from "next/router";
-
-import { favouriteSlice } from "../features/artworks/favouriteSlice";
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import userEvent from "@testing-library/user-event";
 
 const artwork: Artwork = {
   id: 50273,
@@ -80,11 +76,11 @@ describe("Single Artwork page", () => {
     expect(titleHeader).toBeVisible();
   });
 
-  it("Favourite button renders correct data", () => {
+  it("Favourite button renders correct data", async () => {
     const store = makeStore({
-      // favourite: {
-      //   list: [artwork],
-      // },
+      favourite: {
+        list: [artwork],
+      },
     });
     //TODO!!!!
     // jest.spyOn(window.localStorage, "getItem").mockImplementation(() => {
@@ -104,6 +100,11 @@ describe("Single Artwork page", () => {
     );
 
     const favButton = screen.getByRole("button", { name: "REMOVE" });
+
     expect(favButton).toBeVisible();
+
+    userEvent.click(favButton);
+    const addButton = await screen.findByRole("button", { name: "ADD" });
+    expect(addButton).toBeVisible();
   });
 });

@@ -25,16 +25,6 @@ const mockArtWork = {
   imageURL:
     "https://www.artic.edu/iiif/2/bf4ac6d1-fdd1-7937-fbac-079b3dde6f1d/full/843,/0/default.jpg",
 };
-// test("renders nav text", () => {
-//   const { getByText, getByLabelText } = render(<Nav />);
-//
-//   getByText("Home");
-// got an error, make sure to wrap component with provider
-// });
-
-/* Is it a good practice to test Nav sized component as it is
-which kind of depends on another component?
-* */
 
 describe("Test testing", () => {
   it("renders the component", () => {
