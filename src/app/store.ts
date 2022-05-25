@@ -34,16 +34,6 @@ export function makeStore(preloadedPartialState: DeepPartial<RootState> = {}) {
       favourite: favouriteSlice,
       pagination: paginationSlice,
     },
-    preloadedState: merge(
-      {},
-      {
-        artworks: artworkInit,
-        singleArtwork: initSingle,
-        favourite: initFav,
-        pagination: initPagi,
-      },
-      preloadedPartialState
-    ),
   });
 }
 export const store = makeStore();

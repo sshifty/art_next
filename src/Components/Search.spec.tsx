@@ -4,10 +4,11 @@ import userEvent from "@testing-library/user-event";
 
 import Search from "./Search";
 import { makeStore } from "../app/store";
+import { createMockStore } from "../app/mockStore";
 
 describe("Search Component", () => {
   it("Check if elements are rendered", () => {
-    const store = makeStore();
+    const store = createMockStore();
 
     render(
       <Provider store={store}>

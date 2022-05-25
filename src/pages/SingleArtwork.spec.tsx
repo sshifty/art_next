@@ -5,6 +5,12 @@ import SingleArtwork, { getStaticProps } from "../pages/[id]";
 import * as api from "../app/api";
 import { Artwork } from "../features/artworks/types";
 import userEvent from "@testing-library/user-event";
+import { createMockStore, mockStore } from "../app/mockStore";
+import {
+  addFavourite,
+  removeFavourite,
+} from "../features/artworks/favouriteSlice";
+import { useAppDispatch } from "../app/hooks";
 
 const artwork: Artwork = {
   id: 50273,
@@ -77,11 +83,12 @@ describe("Single Artwork page", () => {
   });
 
   it("Favourite button renders correct data", async () => {
-    const store = makeStore({
+    const store = createMockStore({
       favourite: {
         list: [artwork],
       },
     });
+
     //TODO!!!!
     // jest.spyOn(window.localStorage, "getItem").mockImplementation(() => {
     //   return JSON.stringify([artwork]);
@@ -91,8 +98,6 @@ describe("Single Artwork page", () => {
       isFallback: false,
     }));
 
-    const myStore = store.getState();
-
     render(
       <Provider store={store}>
         <SingleArtwork artwork={artwork} />
@@ -100,11 +105,20 @@ describe("Single Artwork page", () => {
     );
 
     const favButton = screen.getByRole("button", { name: "REMOVE" });
-
     expect(favButton).toBeVisible();
 
-    userEvent.click(favButton);
-    const addButton = await screen.findByRole("button", { name: "ADD" });
-    expect(addButton).toBeVisible();
+    await userEvent.click(favButton);
+
+    const actions = store.getActions();
+    const expectedPayload = {
+      type: "favourite/removeFavourite",
+      payload: artwork.id,
+    };
+
+    expect(actions).toEqual([expectedPayload]);
+
+    screen.debug();
+    // const addButton = await screen.findByRole("button", { name: "ADD" });
+    // expect(addButton).toBeVisible();
   });
 });
