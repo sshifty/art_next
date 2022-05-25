@@ -18,9 +18,11 @@ const Search: FunctionComponent = (props) => {
     setLocalSearch(e.target.value);
   };
 
-  const onSubmit = (e: React.SyntheticEvent) => {
-    dispatch(setSearch(localSearch));
+  const onSubmit = async (e: React.SyntheticEvent) => {
+    await dispatch(setSearch(localSearch));
+
     e.preventDefault();
+
     if (!localSearch) {
       dispatch(
         getArtworksAsync({
@@ -31,7 +33,7 @@ const Search: FunctionComponent = (props) => {
     } else {
       dispatch(
         getSearchArtworks({
-          param: artworkSearch,
+          param: localSearch,
           page: 1,
           pageLimit: pagination.limit,
         })
@@ -41,6 +43,7 @@ const Search: FunctionComponent = (props) => {
       router.push("/");
     }
   };
+
   return (
     <div data-testid="search-form">
       <form onSubmit={onSubmit}>

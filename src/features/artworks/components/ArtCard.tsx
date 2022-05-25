@@ -10,7 +10,6 @@ interface CardProps {
 }
 
 export const ArtCard: FC<CardProps> = ({ artwork }) => {
-  console.log(artwork);
   return (
     <div className={styles.card}>
       <Image

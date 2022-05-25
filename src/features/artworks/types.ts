@@ -13,6 +13,7 @@ export interface Artwork {
 }
 export interface ArtworkState {
   list: Artwork[];
+  total?: number;
   pagination: Pagination;
   status?: string;
   search: string;
@@ -23,6 +24,7 @@ export interface SingleArtworkState {
   status: string;
 }
 export interface Pagination {
+  total?: number;
   current_page: number;
   total_pages: number;
   limit: number;

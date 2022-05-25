@@ -26,7 +26,7 @@ describe("Search Component", () => {
   });
 
   it("Should be able to type in input", async () => {
-    const store = makeStore();
+    const store = createMockStore();
 
     const { getByText } = render(
       <Provider store={store}>
