@@ -2,8 +2,9 @@ import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import { DeepPartial } from "@reduxjs/toolkit";
 import merge from "lodash/merge";
-import { makeStore, RootState } from "./store";
 import configureMockStore from "redux-mock-store";
+
+import { makeStore, RootState } from "./store";
 
 const store = makeStore();
 

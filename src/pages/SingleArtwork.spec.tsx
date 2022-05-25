@@ -1,16 +1,12 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+
 import { makeStore } from "../app/store";
 import SingleArtwork, { getStaticProps } from "../pages/[id]";
 import * as api from "../app/api";
 import { Artwork } from "../features/artworks/types";
-import userEvent from "@testing-library/user-event";
 import { createMockStore, mockStore } from "../app/mockStore";
-import {
-  addFavourite,
-  removeFavourite,
-} from "../features/artworks/favouriteSlice";
-import { useAppDispatch } from "../app/hooks";
 
 const artwork: Artwork = {
   id: 50273,
@@ -25,6 +21,11 @@ const artwork: Artwork = {
   imageURL:
     "https://www.artic.edu/iiif/2/bf4ac6d1-fdd1-7937-fbac-079b3dde6f1d/full/843,/0/default.jpg",
 };
+
+interface payloadFavRemoveType {
+  type: string;
+  payload: number;
+}
 
 describe("Single Artwork page", () => {
   afterAll(() => {
@@ -110,7 +111,7 @@ describe("Single Artwork page", () => {
     await userEvent.click(favButton);
 
     const actions = store.getActions();
-    const expectedPayload = {
+    const expectedPayload: payloadFavRemoveType = {
       type: "favourite/removeFavourite",
       payload: artwork.id,
     };
