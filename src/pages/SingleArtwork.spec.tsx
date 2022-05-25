@@ -32,7 +32,7 @@ describe("Single Artwork page", () => {
     jest.restoreAllMocks();
   });
   it("getStaticProps returns the correct data", async () => {
-    const store = makeStore();
+    const store = createMockStore();
     jest
       .spyOn(api, "fetchSingleArtwork")
       .mockImplementation(async () => artwork);

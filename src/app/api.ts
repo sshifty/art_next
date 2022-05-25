@@ -15,7 +15,7 @@ export const fetchArtworks = async (
   const resp = await axios.get(
     `${baseURL}?page=${page}&limit=${pageLimit}&fields=${fields}`
   );
-  console.log(resp);
+
   const { data } = resp;
 
   const infos = data.data.map((item) => {
@@ -46,8 +46,8 @@ export const fetchQuerySearch = async (
   page: number = 1,
   pageLimit: number = 25
 ) => {
-  const resp = await api.get(
-    `$/search?q=${param}&query[term][is_public_domain]=true&limit=${pageLimit}&page=${page}&fields=${fields}`
+  const resp = await axios.get(
+    `${baseURL}/search?q=${param}&query[term][is_public_domain]=true&limit=${pageLimit}&page=${page}&fields=${fields}`
   );
 
   const { data } = await resp;

@@ -1,10 +1,10 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 import {
   mockFetchedArtworks,
   mockFetchedSingleArtwork,
 } from "../Constants/mockConstants";
-import { fetchArtworks, fetchSingleArtwork } from "./api";
+import { fetchArtworks, fetchQuerySearch, fetchSingleArtwork } from "./api";
 
 jest.mock("axios");
 
@@ -32,5 +32,21 @@ describe("API", () => {
     expect(data.infos.length).toBe(data.pagination.limit);
 
     expect(data.infos[1].imageURL).toBeTruthy();
+    data.infos.map((item) => {
+      expect(item.imageURL).toBeTruthy();
+    });
+  });
+
+  it("Query search", async () => {
+    mockedAxios.get.mockResolvedValue(mockFetchedArtworks);
+
+    const data = await fetchQuerySearch("cats");
+
+    expect(data.infos.length).toBe(data.pagination.limit);
+
+    expect(data.infos[1].imageURL).toBeTruthy();
+    data.infos.map((item) => {
+      expect(item.imageURL).toBeTruthy();
+    });
   });
 });
