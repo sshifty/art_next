@@ -19,6 +19,7 @@ export const ArtCard: FC<CardProps> = ({ artwork }) => {
         placeholder={artwork.thumbnail?.lqip ? "blur" : "empty"}
         blurDataURL={artwork.thumbnail?.lqip}
         alt={artwork.thumbnail?.alt_text ?? artwork.title}
+        data-testid="artcard-image"
       />
       <h3>{artwork.title}</h3>
       <div className={styles.buttonContainer}>
